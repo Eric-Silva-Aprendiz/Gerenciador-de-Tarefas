@@ -1,0 +1,122 @@
+router.post('/signin', async(req, res)=>{
+    try {
+        let {user, tokem} = await userServices.login(req.body);        
+        res.cookie("access-token", tokem, {httpOnly: false, secure: false, sameSite: "lax"});
+        return res.status(200).json({auth: true, user});
+    } catch (error) {
+        if(error.statusCode){return res.status(error.statusCode).json({mensagem: error.message});}
+        console.error(error);
+        res.status(500).json({message: "erro interno no servidor"});
+    }
+})
+
+
+router.get("/session", /*tm.verifyJWTCookie*/ async (req, res) => {
+  try {
+    console.log("req.Headers: ", req.headers, req.cookies, req.header.cookie)
+    const user = await userServices.retornarUsuario(req.userId);
+    if (!user) {
+      return res.status(404).json({ auth: false, message: "Usuário não encontrado" });
+    }
+    res.json({auth: true, user});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ auth: false, message: "Erro interno no servidor" });
+  }
+});
+
+
+const jwt = require("jsonwebtoken");
+const secret = "N9$vQ2!mLp7#Xr8@Za5^Tw1&Kc4*Hy0=Fu6!Bd3%Pe9@Js2#Mn8";
+
+class TokenManager{
+    verifyJWT = (req, res, next) =>{
+        const token = req.headers["access-token"];
+        if(!token) return res.status(401).json(
+            {auth: false , message: "Token não foi recebido"});
+        jwt.verify(token, secret, (err, decoded) =>{
+            if(err) return res.status(500).json({auth: false, message: "tokem expirou"});
+            req.userId = decoded.id;
+            next()
+        })
+    }
+    verifyJWTCookie = (req, res, next) =>{
+        const token = req.cookies["access-token"];
+        console.log(token);
+        if(!token) return res.status(401).json(
+            {auth: false , message: "Token não foi recebido"});
+        jwt.verify(token, secret, (err, decoded) =>{
+            if(err) return res.status(500).json({auth: false, message: "tokem expirou"});
+            req.userId = decoded.id;
+            next()
+        })    
+    }
+    sign = (id) => {return jwt.sign({id}, secret, {expiresIn: "1h"});};
+}
+
+module.exports = new TokenManager()
+
+
+
+export async function getCustomSession() {
+  const response = await fetch("http://localhost:3000/api/users/session", {
+    method: "GET",
+    credentials: "include",
+    headers:{
+      'Content-Type': 'application/json',      
+    },
+  });
+
+  return response.json();
+}
+
+
+"access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiaWF0IjoxNzg4Mzc1MTA1LCJleHAiOjE3ODgzNzg3MDV9.LR2JJuSFVr69Ac5wNWRoWodG2Yee05K4cmenuD4F2I4; __next_hmr_refresh_hash__=373"
+
+export async function getCustomSession() {
+  const response = await fetch("http://localhost:3000/api/users/session", {
+    method: "GET",
+    credentials: "include",
+    headers:{
+      'Content-Type': 'application/json',      
+    },
+  });
+
+  return response.json();
+}
+
+
+const express = require('express');
+const cors = require('cors');
+const rotas = require("./routes/route.js");
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const port = 3000;
+const app = express();
+
+
+app.use(bodyParser.json());
+app.use(cors({
+    origin: ["http://localhost:3001"],
+    methods: ["GET", "POST", "PUT", "DELETE"], 
+    credentials: true
+}
+))
+app.use(express.json())
+app.use(cookieParser())
+app.use("/api/users/", rotas);
+
+let server = app.listen(port, () => console.log(`SERVIDOR PRONTO PORTA: ${port}`));
+
+module.exports = server;
+
+"req.Headers:  {
+  host: 'localhost:3000',
+  connection: 'keep-alive',
+  'content-type': 'application/json',
+  accept: '*/*',
+  'accept-language': '*',
+  'sec-fetch-mode': 'cors',
+  'user-agent': 'node',
+  'accept-encoding': 'gzip, deflate'
+} [Object: null prototype] {} undefined"

@@ -1,0 +1,221 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Gerenciador de tarefas",
+    "description": ""
+  },
+  
+  "host": "localhost:3000",
+  "basePath": "/api/users/",
+  "schemes": [
+    "http"
+  ],
+  "definitions":{
+    "Usuario":{
+      "type": "object",
+      "properties":{
+        "name": {"type": "string", "description": "Nome do usuario", "example": "Jon"},
+        "email": {"type": "string", "description": "email do usuario", "example": "Jon@gmail.com"},
+        "password": {"type": "string", "description": "senha do usuario", "example": "1we34fd2"},
+        "tipo": {"type": "string", "description": "tipo do usuario", "example": "Cliente"}
+      }
+    },
+    "UsuarioAtualização":{
+      "type": "object",
+      "properties":{
+        "name": {"type": "string", "description": "Nome do usuario", "example": "jack"},
+        "email": {"type": "string", "description": "email do usuario", "example": "jack@gmail.com"},
+        "password": {"type": "string", "description": "senha do usuario", "example": "1we333d2"}        
+      }
+    },
+    "UsuarioLogin":{
+      "type": "object",
+      "properties":{        
+        "email": {"type": "string", "description": "email do usuario", "example": "Matheus@gmail.com"},
+        "password": {"type": "string", "description": "senha do usuario", "example": "01293wgyds"}        
+      }
+    }
+  },
+  "paths": {
+    "/signin": {
+      "post": {
+        "description": "Login de usuario",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/UsuarioLogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404":{
+            "description": "usuario não encontrado no banco de dados"
+          },
+          "400": {
+            "description": "dados não enviados, ou enviados de forma incorreta"
+          },
+          "422":{
+            "description": "senha fora do padrão permitido"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }, 
+    "/git/user": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "accessToken": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "description": "Desativação dos tokens no FrotEnd",
+        "responses": {
+          "200": {
+            "description": "tokens desativados"
+          },
+          "401": {
+            "description": "não authorizado"
+          },
+          "500": {
+            "description": "erro interno no servidor"
+          }
+        }
+      }
+    },
+    "/session": {
+      "get": {
+        "description": "Retorna a nome e email de usuario",
+        "responses": {
+          "200": {
+            "description": "nome e email retornados"
+          },
+          "401": {
+            "description": "não authorizado"
+          },
+          "500": {
+            "description": "erro interno no servidor"
+          }
+        }
+      }
+    },
+    "/": {
+      "post": {
+        "description": "Cadastro de Usuario",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/Usuario"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuario foi criado com sucesso"
+          },
+          "400": {
+            "description": "dados não enviados, ou invalidos"            
+          },
+          "422":{
+            "description": "senha fora do padrão permitido"
+          },
+          "409": {
+            "description": "O email informado já esta sendo utilizado"
+          },
+          "500": {
+            "description": "erro interno no servidor"
+          }
+        }
+      },
+      "put": {
+        "description": "Atualização de usuario",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/UsuarioAtualização"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario atualizado"
+          },
+          "400": {
+            "description": "dados não enviados, ou invalidos"            
+          },
+          "404":{
+            "description": "Usuario não encontrado no banco de dados"
+          },
+          "422":{
+            "description": "senha fora do padrão permitido"
+          },
+          "409": {
+            "description": "O email informado já esta sendo utilizado"
+          },
+          "401": {
+            "description": "Não authorizado"
+          },
+          "500": {
+            "description": "erro interno no servidor"
+          }
+        }
+      },
+      "delete": {
+        "description": "Deleta usuario",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "dados não enviados, ou invalidos"            
+          },
+          "404":{
+            "description": "Usuario não encontrado no banco de dados"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    } 
+  }
+}
