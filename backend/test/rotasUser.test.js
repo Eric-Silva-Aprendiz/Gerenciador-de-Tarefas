@@ -23,7 +23,7 @@ beforeAll(
                 password: "1s234f56yu"
             }); 
                 
-        preUsuarioId = response.body.id
+        preUsuarioId = response.body.user.id
 
     console.log(response.body)
 
@@ -49,7 +49,7 @@ describe('teste de rotas de usuário', () => {
                 password: "1234567a89101112"
             })  
             
-            usuarioId = response.body.id
+            usuarioId = response.body.user.id
             token = tm.sign(usuarioId)        
 
             expect(response.status).toBe(201);            

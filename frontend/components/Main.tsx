@@ -1,6 +1,6 @@
-import { getCustomSession } from "@/services/server"
+/*import { getCustomSession } from "@/services/server"
 import { findTasksServer } from "@/services/server";
-import Link from "next/link";
+import Link from "next/link";*/
 
 
 export default async function Main() {  

@@ -1,6 +1,5 @@
 'use client'
 import {signOut} from "next-auth/react";
-import { Task } from "@/types/Task";
 
 export async function createUser(_nome: FormDataEntryValue | null, _email: FormDataEntryValue | null, senha: FormDataEntryValue | null){
   const response = await fetch('http://localhost:3000/api/users/', {

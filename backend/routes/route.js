@@ -6,7 +6,7 @@ const userServices = require("../services/userServices.js");
 
 //Rotas de Usuário
 
-router.post('/signin', async(req, res)=>{    
+router.post('/signin', async(req, res)=>{
     try {        
         let {user, tokem, adminTokem} = await userServices.login(req.body);          
         res.cookie("access-token", tokem, {httpOnly: true, secure: false, sameSite: "lax"});     
@@ -70,7 +70,7 @@ router.get("/session", tm.verifyJWTCookie, async (req, res) => {
 router.post('/', async(req,res) =>{    
     try {        
         let user = await userServices.adicionarUsuario(req.body);        
-        res.status(201).json({mensagem: "Usuario criado com sucesso"});
+        res.status(201).json({mensagem: "Usuario criado com sucesso", user});
     } catch (error) {
         if(error.statusCode){return res.status(error.statusCode).json({mensagem: error.message});}
         console.error(error);
