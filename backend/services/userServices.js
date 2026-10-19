@@ -1,3 +1,4 @@
+const tasksDao = require("../dao/tasksDao.js")
 const userDao = require("../dao/userDao.js");
 const validator = require("validator");
 const errors = require("../errors/errors.js");
@@ -151,7 +152,9 @@ retornarUsuarioCompleto = async(id) =>{
 }
 
 deletarUsuario = async(id) => {
-    await retornarUsuario(id);        
+    await retornarUsuario(id); 
+    let task = await tasksDao.findOne(id);
+    if(task){await tasksDao.deleteAll(id)};       
     return await userDao.delete(id);
 }
 

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const tm = require("../manager/token_manager.js");
 const userServices = require("../services/userServices.js");
+const taskServices = require("../services/taskServices.js");
 
 
 //Rotas de Usuário
@@ -94,6 +95,64 @@ router.delete("/", tm.verifyJWTCookie ,async(req, res) =>{
         let dados = await userServices.deletarUsuario(req.userId);
         res.status(200).json({mensagem: "usuario deletado com sucesso"});
     } catch (error) {
+        if(error.statusCode){return res.status(error.statusCode).json({mensagem: error.message});}
+        console.error(error);
+        res.status(500).json({mensagem: "erro interno no servidor"});
+    }
+})
+
+
+//Rotas de Tarefas
+
+router.get('/tasks', tm.verifyJWTCookie ,async(req, res) =>{
+    try {
+        let dados = await taskServices.listarTarefasDeUsuario(req.userId);
+        res.status(200).json(dados);   
+    } catch (error) {
+        if(error.statusCode){return res.status(error.statusCode).json({mensagem: error.message});}
+        console.error(error);
+        res.status(500).json({mensagem: "erro interno no servidor"});
+    }
+})
+
+router.post('/tasks', tm.verifyJWTCookie , async(req, res) =>{
+    try {
+        let dados = await taskServices.adicionarTarefa(req.userId, req.body);
+        res.status(201).json(dados);   
+    } catch (error) {
+        if(error.statusCode){return res.status(error.statusCode).json({mensagem: error.message});}
+        console.error(error);
+        res.status(500).json({mensagem: "erro interno no servidor"});
+    }
+})
+
+router.get('/tasks/:idtask', tm.verifyJWTCookie ,async(req, res) =>{
+    try {
+        let dados = await taskServices.retornarTarefa(Number(req.userId), Number(req.params.idtask));
+        res.status(200).json(dados);   
+    } catch (error) {
+        if(error.statusCode){return res.status(error.statusCode).json({mensagem: error.message});}
+        console.error(error);
+        res.status(500).json({mensagem: "erro interno no servidor"});
+    }
+})
+
+router.put('/tasks/:idtask', tm.verifyJWTCookie ,async(req, res) =>{
+    try {
+        let dados = await taskServices.atualizarTarefa(req.body, Number(req.params.idtask), Number(req.userId));
+        res.status(200).json(dados);   
+    } catch (error) {
+        if(error.statusCode){return res.status(error.statusCode).json({mensagem: error.message});}
+        console.error(error);
+        res.status(500).json({mensagem: "erro interno no servidor"});
+    }
+})
+
+router.delete('/tasks/:idtask', tm.verifyJWTCookie ,async(req, res) => {
+    try{
+        let dados = await taskServices.deletarTarefa(Number(req.params.idtask), Number(req.userId));
+        res.status(200).json(dados);
+    }catch(error){
         if(error.statusCode){return res.status(error.statusCode).json({mensagem: error.message});}
         console.error(error);
         res.status(500).json({mensagem: "erro interno no servidor"});

@@ -35,6 +35,20 @@
         "email": {"type": "string", "description": "email do usuario", "example": "Matheus@gmail.com"},
         "password": {"type": "string", "description": "senha do usuario", "example": "01293wgyds"}        
       }
+    },
+    "Task":{
+      "type": "object",
+      "properties":{                
+        "titulo": {"type": "string", "description": "nome da tarefa", "example": "estudar"},        
+        "status": {"type": "string", "description": "nome da tarefa", "example": "pendente"}                   
+      }
+    },
+    "TaskAtualizada":{
+      "type": "object",
+      "properties":{                
+        "titulo": {"type": "string", "description": "nome da tarefa", "example": "estudar"},
+        "status": {"type": "string", "description": "status da tarefa", "example": "andamento"}        
+      }
     }
   },
   "paths": {
@@ -216,6 +230,149 @@
           }
         }
       }
-    } 
-  }
-}
+    },
+    "/tasks":{
+      "get":{
+        "description": "Retorna as Tarefas de um usuario especifico",
+        "responses": {
+          "200": {
+            "description": "tasks retornadas"
+          },
+          "401": {
+            "description": "não authorizado"
+          },
+          "400": {
+            "description": "id não enviado ou invalido"
+          },     
+          "500": {
+            "description": "erro interno no servidor"
+          }
+        }
+      },
+      "post":{
+        "description": "cadastra uma nova tarefa",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/Task"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404":{
+            "description": "usuario não encontrado no banco de dados"
+          },
+          "400": {
+            "description": "dados não enviados, ou enviados de forma incorreta"
+          },
+          "422":{
+            "description": "senha fora do padrão permitido"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/tasks/{idtask}":{
+      "get":{
+        "description": "retorna uma tarefa especifica",
+        "parameters": [
+          {
+            "name": "idtask",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "task retornada"
+          },
+          "401": {
+            "description": "não authorizado"
+          },
+          "400": {
+            "description": "id não enviado ou invalido"
+          },
+          "404": {
+            "description": "tarefa não encotrada"
+          },     
+          "500": {
+            "description": "erro interno no servidor"
+          }
+        }
+      },
+      "put":{
+        "description": "atualiza uma tarefa especifica",
+         "parameters": [          
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/TaskAtualizada"
+            }
+          },
+          {
+            "name": "idtask",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "task atualizada"
+          },
+          "401": {
+            "description": "não authorizado"
+          },
+          "400": {
+            "description": "id não enviado ou invalido"
+          },
+          "404": {
+            "description": "tarefa não encotrada"
+          },     
+          "500": {
+            "description": "erro interno no servidor"
+          }
+        }
+      },
+      "delete":{
+        "description": "Deleta uma tarefa especifica",
+        "parameters":[
+          {
+            "name": "idtask",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "task deletada"
+          },
+          "401": {
+            "description": "não authorizado"
+          },
+          "400": {
+            "description": "id não enviado ou invalido"
+          },
+          "404": {
+            "description": "tarefa não encotrada"
+          },     
+          "500": {
+            "description": "erro interno no servidor"
+          }
+        }
+      }
+    }
+  }}
+  

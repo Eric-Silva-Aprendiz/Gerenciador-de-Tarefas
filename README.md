@@ -1,13 +1,16 @@
 # Gerenciador-de-Tarefas
 
 aplicação web de gerenciamento de tarefas desenvolvida com next.js, React, e typeScript no frontend, integrada a uma API backend desenvolvida com Node.js e express. possui funcionalidades de gerenciamento de usuarios e tarefas, autenticação JWT e banco de dados relacional com Sequelize e login social com GitHub.
-A.Objetivo do projeto
 
-Este projeto foi desenvolvido com o objetivo de praticar conceitos de backend como REST APIs, banco de dados e autenticação.
+## Objetivo do projeto
+
+Este projeto foi desenvolvido com o objetivo de praticar conceitos de backend como REST APIs, banco de dados, autenticação e frontend como criação de paginas web com next.js, react e autenticação por terceiros com GitHub OAuth.
 
 ## Tecnologias utilizadas:
 
-Backend: Node.js, Express, Sequelize, MySQL, JWT, Swagger e dotenv.
+## Backend
+Node.js, Express, Sequelize, MySQL, JWT, Swagger e dotenv.
+
 ### Frontend
 Next.js, React, TypeScript e Tailwind CSS.
 
@@ -54,7 +57,7 @@ Pré-requisitos
 
 git clone https://github.com/Eric-Silva-Aprendiz/Gerenciador-de-Tarefas.git
 
-Backend
+### Backend
 
 Na raiz do repositório(gerenciador_de_tarefas), entre na pasta backend:
 
@@ -77,7 +80,7 @@ Inicie o servidor:
 
 node index.js
 
-Frontend
+### Frontend
 
 Em outro terminal, entre na pasta do frontend:
 
@@ -124,6 +127,18 @@ PUT /
 
 DELETE /
 
+### Tarefas
+
+GET /tasks
+
+POST /tasks
+
+GET /tasks/:idtask
+
+PUT /tasks/:idtask
+
+DELETE /tasks/:idtask
+
 ## Testes
 
 O projeto possui estrutura para testes automatizados na pasta:
@@ -141,8 +156,19 @@ Os componentes são responsáveis pela interface da aplicação e pela interaç�
 
 ### Main
 
-Componente responsável pela página inicial da aplicação, exibindo o título do gerenciador de tarefas.
+Componente responsável pela página inicial da aplicação, quando o usuário esta logado exibe quantas tarefas o usuário tem e seus status se o usuário não estiver logado ele exibe somente o título do gerenciador de tarefas.
 
+### TaskList
+
+Exibe uma lista de tarefas do usuario com butões de iniciar, atualizar e deletar uma tarefa, caso o usuário não tenha nenhuma tarefa, ele exibira apenas uma mensagem de "Nenhuma tarefa".
+
+### TaskComponent
+
+Componente responsavel por chamar as funções de busca, atualizão e deleção das tarefas que são exibidas na lista do componente TaskList.
+
+### NovaTarefa
+
+Um input onde os usuarios definem o titulo de uma nova tarefa que sera criada.
 
 ### NavBar
 
@@ -244,6 +270,14 @@ signOutServer: solicita o encerramento da autenticação no backend.
 
 deleteUser: solicita a exclusão da conta do usuário e inicia o encerramento das sessões de autenticação.
 
+findTasks: solicita as tarefas pertencentes ao usuário logado.
+
+createTask: envia os dados para criar uma tarefa.
+
+updateTasks: solicita a atualização dos dados de uma tarefa.
+
+deleteTasks: solicita a exclusão de uma Tarefa do usuário.
+
 
 ### Server Services
 
@@ -262,6 +296,8 @@ listarUsuarios: solicita a listagem de usuários utilizando o token administrati
 
 exibirUsuarios: solicita os dados de um usuário específico.
 
+findTasksServer: solicita as tarefas do usuário autenticado 
+
 
 ### Páginas
 
@@ -274,6 +310,8 @@ cadastro: Tela de cadastro de usuários.
 about: Exibe as informações do usuário autenticado.
 meu_perfil: Permite atualizar os dados cadastrais do usuário.
 sobre: Apresenta informações sobre o projeto e suas funcionalidades.
+tasks: Apresenta as tarefas do usuário e o permite atualizalas.
+
 Rota dinâmica de usuáriosExibe os dados de um usuário específico e suas tarefas. 
 
 As páginas utilizam componentes reutilizáveis para organizar a interface e, quando necessário, funções da camada de serviços para consultar ou modificar dados.

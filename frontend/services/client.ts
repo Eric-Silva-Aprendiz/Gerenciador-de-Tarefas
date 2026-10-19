@@ -1,5 +1,6 @@
 'use client'
 import {signOut} from "next-auth/react";
+import {Task} from "@/types/Task"
 
 export async function createUser(_nome: FormDataEntryValue | null, _email: FormDataEntryValue | null, senha: FormDataEntryValue | null){
   const response = await fetch('http://localhost:3000/api/users/', {
@@ -70,6 +71,65 @@ export async function deleteUser(){
   let dados = await response.json();
   let status = response.status;
   return {status, dados};
+}
+
+export async function findTasks(){
+
+    const response = await fetch(`http://localhost:3000/api/users/tasks`, { 
+    cache: 'no-cache',
+    credentials: "include",
+    headers: {
+      'Content-Type': 'application/json'    
+    },
+    });
+  const data: Task[] = await response.json();
+
+  return data
+}
+
+export async function createTask(titulo_: string){  
+  
+  const response = await fetch(`http://localhost:3000/api/users/tasks`, {
+    method: 'POST',
+    credentials: "include",
+    headers: {
+      'Content-Type': 'application/json'    
+    },
+    body: JSON.stringify({titulo: titulo_, status: "pendente"})
+  });
+
+  let dados = await response.json();
+  let status = response.status;
+  return {status, dados};
+}
+
+export async function updateTasks(task: Task,taskId: number){
+  const response = await fetch(`http://localhost:3000/api/users/tasks/${taskId}`, {
+    method: 'PUT',
+    credentials: "include",
+    headers: {
+      'Content-Type': 'application/json'    
+    },
+    body: JSON.stringify(task)
+  });
+
+  let dados = await response.json();
+  let status = response.status;
+  return {status, dados};  
+}
+
+export async function deleteTasks(taskId: number){  
+  const response = await fetch(`http://localhost:3000/api/users/tasks/${taskId}`, {
+    method: 'DELETE',
+    credentials: "include",
+    headers: {
+      'Content-Type': 'application/json'    
+    },
+  });
+
+  let dados = await response.json();
+  let status = response.status;
+  return {status, dados}; 
 }
 
 

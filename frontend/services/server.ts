@@ -61,5 +61,20 @@ export async function exibirUsuarios(id: number){
   return {status, dados};
 }
 
+export async function findTasksServer(){
+  const {tokem} = await getTokem();
+  
+  const response = await fetch(`http://localhost:3000/api/users/tasks`, { 
+    cache: 'no-cache',
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json',
+      'cookie': `access-token=${tokem}` 
+    },
+  });
+  const data: Task[] = await response.json();
+
+  return data
+}
 
 
