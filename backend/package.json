@@ -14,7 +14,7 @@
     "transaction": "^0.0.2"
   },
   "name": "backend",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "",
   "main": "index.js",
   "scripts": {
