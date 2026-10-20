@@ -2,7 +2,6 @@
 import {signOut, useSession} from "next-auth/react";
 import { signOutServer } from "@/services/client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 async function Sair(){
     signOut()
@@ -26,7 +25,21 @@ function AuthButton() {
         )    
 }
 
-export default function NavBar(){
+export default function NavBar(tokenTipo: any){       
+    if(tokenTipo.tokenTipo == 2){
+        return(
+            <nav className="flex justify-between bg-slate-800 text-white p-5 items-center">
+                <div className="flex gap-2 items-center">
+                    <Link href='/' className="text-2xl font-semibold">Gerenciador de Tarefas</Link>
+                    <Link href='/sobre' className="bg-blue-500 rounded font-semibold p-2 hover:bg-blue-800">Sobre</Link>
+                    <Link href= '/users' className="bg-blue-500 rounded font-semibold p-2 hover:bg-blue-800">Usuários</Link>
+                </div>
+                <div className="flex gap-2 items-center">
+                    <AuthButton />
+                </div>
+            </nav>
+        );
+    }
     return(
         <nav className="flex justify-between bg-slate-800 text-white p-5 items-center">
             <div className="flex gap-2 items-center">

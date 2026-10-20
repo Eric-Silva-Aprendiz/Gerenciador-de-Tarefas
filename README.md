@@ -139,6 +139,14 @@ PUT /tasks/:idtask
 
 DELETE /tasks/:idtask
 
+### Administrador 
+
+GET /
+
+GET /tasks/user/:id
+
+GET /:id
+
 ## Testes
 
 O projeto possui estrutura para testes automatizados na pasta:
@@ -169,6 +177,10 @@ Componente responsavel por chamar as funções de busca, atualizão e deleção 
 ### NovaTarefa
 
 Um input onde os usuarios definem o titulo de uma nova tarefa que sera criada.
+
+### UsersList
+
+Uma lista com todos os usuários no banco de dados, com cada elemento da lista sendo um caminho para uma pagina detalhando melhor um usuario especifico.
 
 ### NavBar
 
@@ -296,7 +308,9 @@ listarUsuarios: solicita a listagem de usuários utilizando o token administrati
 
 exibirUsuarios: solicita os dados de um usuário específico.
 
-findTasksServer: solicita as tarefas do usuário autenticado 
+findTasksServer: solicita as tarefas do usuário autenticado.
+
+findTasksUserServer: solicita as tarefas do usuário definido pelo administrador.
 
 
 ### Páginas
@@ -311,6 +325,8 @@ about: Exibe as informações do usuário autenticado.
 meu_perfil: Permite atualizar os dados cadastrais do usuário.
 sobre: Apresenta informações sobre o projeto e suas funcionalidades.
 tasks: Apresenta as tarefas do usuário e o permite atualizalas.
+users: Apresenta uma lista com todos os usuários.
+user: Apresenta as informações do usuario selecionado pelo administrador.
 
 Rota dinâmica de usuáriosExibe os dados de um usuário específico e suas tarefas. 
 

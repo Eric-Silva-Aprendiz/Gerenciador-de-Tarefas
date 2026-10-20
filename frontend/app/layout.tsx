@@ -1,4 +1,3 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"; 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -36,17 +35,17 @@ export default async function RootLayout({
   let session;
   let token = await TokemExiste();
   if(token){
-    session = await getCustomSession();
-  } 
+    session = await getCustomSession();  
+  }
   
   return (
-    <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
-        <SessionProvider session={session}>
-          <NavBar/>
-          {children}
-        </SessionProvider>
-        </body>
-    </html>
-  );
+      <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+        <body className="min-h-full flex flex-col">
+          <SessionProvider session={session}>
+            <NavBar tokenTipo = {token}/>
+            {children}
+          </SessionProvider>
+          </body>
+      </html>
+    );
 }

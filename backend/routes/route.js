@@ -159,7 +159,46 @@ router.delete('/tasks/:idtask', tm.verifyJWTCookie ,async(req, res) => {
     }
 })
 
+//Rotas de admin
 
+router.get('/', tm.verifyAdminJWTCookie ,async(req,res) => {    
+    /*const {page} = req.query;
+    const limite = 15;
+    var lastPage = 1*/
+    try{
+        //let contUser = await userServices.constarUsuarios();
+        //contUser
+        //lastPage = (Math.ceil(contUser)/limite);
+        let dados = await userServices.listarUsuarios();
+        res.status(200).json(dados);
+    } catch(error){
+        if(error.statusCode){return res.status(error.statusCode).json({mensagem: error.message});}
+        console.error(error);
+        res.status(500).json({mensagem: "erro interno no servidor"});
+    }
+})
+
+router.get('/tasks/user/:id', tm.verifyAdminJWTCookie, async(req, res) =>{        
+    try {
+        let dados = await taskServices.listarTarefasDeUsuario(Number(req.params.id));
+        res.status(200).json(dados);   
+    } catch (error) {
+        if(error.statusCode){return res.status(error.statusCode).json({mensagem: error.message});}
+        console.error(error);
+        res.status(500).json({message: "erro interno no servidor"});
+    }
+})
+
+router.get('/:id', tm.verifyAdminJWTCookie, async(req, res) =>{
+    try {
+        let dados = await userServices.retornarUsuarioCompleto(req.params.id);
+        res.status(200).json(dados);   
+    } catch (error) {
+        if(error.statusCode){return res.status(error.statusCode).json({mensagem: error.message});}
+        console.error(error);
+        res.status(500).json({message: "erro interno no servidor"});
+    }
+})
 
 
 module.exports = router;

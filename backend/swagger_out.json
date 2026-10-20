@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.1.0",
+    "version": "1.2.1",
     "title": "Gerenciador de tarefas",
     "description": ""
   },
@@ -144,6 +144,20 @@
       }
     },
     "/": {
+      "get":{
+        "description": "Retorna todos os usuários",
+        "responses":{
+          "200": {
+            "description": "usuários retornados"
+          },     
+          "401": {
+            "description": "não authorizado"
+          },     
+          "500": {
+            "description": "erro interno no servidor"
+          }
+        }
+      },
       "post": {
         "description": "Cadastro de Usuario",
         "parameters": [
@@ -268,6 +282,9 @@
           "404":{
             "description": "usuario não encontrado no banco de dados"
           },
+          "401": {
+            "description": "não authorizado"
+          },
           "400": {
             "description": "dados não enviados, ou enviados de forma incorreta"
           },
@@ -368,6 +385,63 @@
           "404": {
             "description": "tarefa não encotrada"
           },     
+          "500": {
+            "description": "erro interno no servidor"
+          }
+        }
+      }
+    },    
+    "/tasks/user/{id}":{
+      "get":{
+        "description": "Lista de tarefas de um usuário especifico",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses":{
+          "200": {
+            "description": "usuários retornados"
+          },
+          "401": {
+            "description": "não authorizado"
+          },
+          "400": {
+            "description": "dados não enviados, ou enviados de forma incorreta"
+          },          
+          "500": {
+            "description": "erro interno no servidor"
+          }
+        }
+      }
+    },
+    "/{id}":{
+      "get": {
+        "description": "Retorna as informações de um usuario especifico",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses":{
+          "200": {
+            "description": "usuários retornados"
+          },
+          "400": {
+            "description": "dados não enviados, ou enviados de forma incorreta"
+          },
+          "401": {
+            "description": "não authorizado"
+          },
+          "404": {
+            "description": "tarefa não encotrada"
+          },               
           "500": {
             "description": "erro interno no servidor"
           }

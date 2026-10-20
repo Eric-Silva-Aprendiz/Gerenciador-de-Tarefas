@@ -10,11 +10,11 @@ export async function getTokem(){
 
 export async function TokemExiste(){ 
   const cookiesStore = await cookies();
-  if(await cookiesStore.get("access-token")?.value){
-    return true;
-  } else {
-    return false
-  }
+  if(await cookiesStore.get("admin-access-token")?.value){
+    return 2;
+  }else if(await cookiesStore.get("access-token")?.value) {
+    return 1;
+  } 
 }
 
 export async function getCustomSession() {
@@ -77,4 +77,18 @@ export async function findTasksServer(){
   return data
 }
 
+export async function findTasksUserServer(id: number){
+  const {tokem, admin} = await getTokem();
+  const response = await fetch(`http://localhost:3000/api/users/tasks/user/${id}`, { 
+    cache: 'no-cache',
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json',
+      'cookie': `admin-access-token=${admin}`
+    },
+  });
+  const data: Task[] = await response.json();
+
+  return data
+}
 
