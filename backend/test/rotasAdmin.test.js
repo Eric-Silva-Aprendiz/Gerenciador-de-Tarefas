@@ -16,20 +16,24 @@ let preUsuarioId;
 
 beforeAll(async () =>{
         const responseAdmin = await request(server)
-            .post(`/api/users`)
+            .post(`/api/users/addUser`)
             .send({
                 name: "Jay", 
                 email: "Jay@gmail.com", 
                 password: "1sws3rr6yu"
             });
 
+        console.log(responseAdmin.body)
+
         const responseClient = await request(server)
-            .post(`/api/users`)
+            .post(`/api/users/addUser`)
             .send({
                 name: "Joseph", 
                 email: "Joseph@gmail.com", 
                 password: "1s234f56yu"
             }); 
+
+        console.log(responseClient.body)
 
         preAdminId = responseAdmin.body.user.id  
         preUsuarioId = responseClient.body.user.id       
@@ -61,6 +65,8 @@ describe('teste de rotas de admin', () => {
                 email: "Jay@gmail.com",
                 password: "1sws3rr6yu"
             })            
+        
+            console.log(response.body)
 
         expect(response.status).toBe(200)
         expect(response.body.auth).toBe(true)        
@@ -101,7 +107,7 @@ describe('teste de rotas de admin', () => {
             .set("Cookie", `admin-access-token=${administradorAdminTokem}`)
 
         expect(response.status).toBe(200)
-        expect(Array.isArray(response.body)).toBe(true)
+        expect(Array.isArray(response.body.usuarios)).toBe(true)
     })
 
     it("listar um usuario especifico", async () =>{        

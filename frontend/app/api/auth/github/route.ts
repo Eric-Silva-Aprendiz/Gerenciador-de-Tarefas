@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const response = await fetch("http://localhost:3000/api/users/git/user",{
+  const response = await fetch("http://localhost:3000/api/users/git/user/addUser",{
       method: "POST",
       credentials: "include", 
       headers: {

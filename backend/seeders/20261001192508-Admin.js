@@ -7,7 +7,7 @@ module.exports = {
     const salt = await bcrypt.genSalt(10, 'a');
     const senhaCripto = await bcrypt.hash('01293wgyds', salt);    
 
-    await queryInterface.bulkInsert('Tasks', [{    
+    await queryInterface.bulkInsert('Users', [{    
       name: 'Matheus',
       email: 'Matheus@gmail.com',
       password: senhaCripto,

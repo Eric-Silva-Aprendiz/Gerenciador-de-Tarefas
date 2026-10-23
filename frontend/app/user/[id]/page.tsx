@@ -7,8 +7,6 @@ type PageProps = {
     params: Promise<{id: string;}>;  
 };
 
-//<button onClick={deletar} className = "text-base p-1 mt-3 text-red-600 border-2 border-red-500 rounded font-semibold rounded-sm hover:bg-red-600 hover:text-white">Deletar</button>
-
 export default async function page({params}: PageProps) {
     const {id} = await params;
     const json = await exibirUsuarios(Number(id));
@@ -32,8 +30,8 @@ export default async function page({params}: PageProps) {
                 <p className="text-2xl p-2 font-bold rounded bg-blue-400 text-white">Tárefas</p>
                 <ul className="flex flex-col gap-2">
                   {tasks.length === 0 && <p className="bg-blue-100 m-1 p-1">Nenhuma tárefa</p>}
-                  {tasks.map((task, index) => (
-                    <li> {index} | {task.titulo} | {task.status} | {task.createdAt} | {task.updatedAt}</li>
+                  {tasks.map((task, index) => (                    
+                    <li key = {index}> {index} | {task.titulo} | {task.status} | {task.createdAt} | {task.updatedAt}</li>
                   ))}
                 </ul>
           </div>

@@ -3,7 +3,7 @@ import {signOut} from "next-auth/react";
 import {Task} from "@/types/Task"
 
 export async function createUser(_nome: FormDataEntryValue | null, _email: FormDataEntryValue | null, senha: FormDataEntryValue | null){
-  const response = await fetch('http://localhost:3000/api/users/', {
+  const response = await fetch('http://localhost:3000/api/users/addUser', {
     method: "POST",
     headers:{
       'Content-Type': 'application/json',
@@ -45,6 +45,20 @@ export async function login(_email: FormDataEntryValue | null, _password: FormDa
   return {status, dados};
 }
 
+export async function listarUsuarios(page: number){
+  const response = await fetch(`http://localhost:3000/api/users`, {
+    method: "GET",
+    credentials: "include",
+    headers:{
+        'Content-Type': 'application/json',                      
+    },
+  });
+
+  let dados = await response.json();
+  let status = response.status;
+  return {status, dados};
+}
+
 
 export async function signOutServer(){
   const response = await fetch("http://localhost:3000/api/users/logout", {
@@ -54,6 +68,17 @@ export async function signOutServer(){
       'Content-Type': 'application/json'    
     },
   })
+  return response.json()
+}
+export async function signOutServerAdmin(){
+  const response = await fetch("http://localhost:3000/api/users/logout/admin", {
+    method: "GET",
+    credentials: "include",
+    headers:{
+      'Content-Type': 'application/json'    
+    },     
+  })
+
   return response.json()
 }
 

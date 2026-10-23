@@ -30,9 +30,9 @@ export async function getCustomSession() {
   return response.json();
 } 
 
-export async function listarUsuarios(){
+export async function listarUsuarios(page: number){
   const {tokem, admin} = await getTokem();
-  const response = await fetch(`http://localhost:3000/api/users`, {
+  const response = await fetch(`http://localhost:3000/api/users?page=${page}`, {
     method: "GET",
     headers:{
         'Content-Type': 'application/json',              

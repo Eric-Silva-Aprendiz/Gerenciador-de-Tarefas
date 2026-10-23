@@ -1,3 +1,5 @@
+
+
 const { where } = require("sequelize");
 const db = require("../models/index.js");
 const bcrypt = require("bcrypt");
@@ -24,6 +26,10 @@ class UserDao {
 
     findAccountById = async(id) =>{
         return await db.Accounts.findByPk(id)
+    }
+
+    deleteAccount = async(id) =>{
+        return await db.Accounts.destroy({where:{userId: id}})
     }
 
     create = async(objJSOM) => {
@@ -99,8 +105,16 @@ class UserDao {
         return await db.Users.count();
     }
 
-    findAll = async() => {
-        return await db.Users.findAll({attributes: ["id", "name", "email", "createdAt", "updatedAt"]})
+    findAll = async(page, quantidadeUsuarios) => {
+        const limit = 10;
+        const quantidadePaginas = Math.ceil(quantidadeUsuarios / limit);
+        const offset = (page - 1) * limit;
+        const usuarios = await db.Users.findAll({
+            limit: limit,
+            offset: offset,
+            attributes: ["id", "name", "email", "createdAt", "updatedAt"]});
+        
+        return {usuarios, quantidadePaginas};
     }
 
     find = async(id) => {

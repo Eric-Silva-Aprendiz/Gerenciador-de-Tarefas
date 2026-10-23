@@ -16,17 +16,14 @@ beforeAll(
     async () =>{        
 
         const response = await request(server)
-            .post(`/api/users`)
+            .post(`/api/users/addUser`)
             .send({
                 name: "Jon Doe", 
                 email: "Jon@gmail.com", 
                 password: "1s234f56yu"
             }); 
                 
-        preUsuarioId = response.body.user.id
-
-    console.log(response.body)
-
+        preUsuarioId = response.body.user.id    
 })
 
 afterAll(async() =>{
@@ -42,7 +39,7 @@ describe('teste de rotas de usuário', () => {
 
     it("cadastro de user", async() =>{
         const response = await request(server)
-            .post(`/api/users`)
+            .post(`/api/users/addUser`)
             .send({
                 name: "eric",
                 email: "eric@gmail.com",
@@ -58,7 +55,7 @@ describe('teste de rotas de usuário', () => {
 
     it("cadastro de email duplicado", async() =>{
         const response = await request(server)
-            .post(`/api/users`)
+            .post(`/api/users/addUser`)
             .send({
                 name: "rose",
                 email: "eric@gmail.com",
@@ -71,7 +68,7 @@ describe('teste de rotas de usuário', () => {
 
     it("cadastro de dados invalidos", async() =>{
         const response = await request(server)
-            .post(`/api/users`)
+            .post(`/api/users/addUser`)
             .send({
                 name: null,
                 email: null,
@@ -84,7 +81,7 @@ describe('teste de rotas de usuário', () => {
 
     it("cadastro de senha invalida", async() =>{
         const response = await request(server)
-            .post(`/api/users`)
+            .post(`/api/users/addUser`)
             .send({
                 name: "Robson",
                 email: "Robson@gmail.com",
@@ -138,6 +135,8 @@ describe('teste de rotas de usuário', () => {
                 email: "eric@gmail.com",
                 password: "1234567a89101112"
             })
+
+        console.log(response.body)
 
         expect(response.body.user.name).toBe("eric");
         expect(response.body.user.email).toBe("eric@gmail.com");

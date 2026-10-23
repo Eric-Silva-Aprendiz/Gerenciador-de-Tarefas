@@ -5,8 +5,9 @@ const errors = require("../errors/errors.js");
 const tm = require("../manager/token_manager.js");
 
 
-listarUsuarios = async() =>{
-    return await userDao.findAll();
+listarUsuarios = async(page) =>{
+    let quantidadeUsuarios = await userDao.count();
+    return await userDao.findAll(page, Number(quantidadeUsuarios));
 }
 
 constarUsuarios = async() =>{
@@ -102,7 +103,6 @@ obterUsuarioGit = async(accessToken) =>{
         return {"name": githubUser.login, "email": githubUserEmail[0].email, "provider": "GitHub", "providerAccountId": githubUser.id};
 }
 
-
 // TESTADO v 
 atualizarUsuario = async(dados, id_usuario) => {
     await retornarUsuario(id_usuario);
@@ -119,7 +119,6 @@ atualizarUsuario = async(dados, id_usuario) => {
         return await userDao.update(usuario, id_usuario);
     }
 }
-
 
 retornarUsuario = async(id) =>{
     id = Number.parseInt(id);    
@@ -153,6 +152,8 @@ retornarUsuarioCompleto = async(id) =>{
 
 deletarUsuario = async(id) => {
     await retornarUsuario(id); 
+    let account = await userDao.findAccountByUserId(id);
+    if(account){await userDao.deleteAccount(id)}
     let task = await tasksDao.findOne(id);
     if(task){await tasksDao.deleteAll(id)};       
     return await userDao.delete(id);
@@ -171,11 +172,11 @@ login = async(data) => {
         throw new errors.NotFoundError("usuário não encontrado"); //V
     }else if(user.tipo == "Cliente"){
         const tokem = tm.sign(user.id);
-        return {"user":{"email": user.email, "name": user.name}, "tokem": tokem};
+        return {"user":{"email": user.email, "name": user.name}, "tokem": tokem, "tipo": "user"};
     }else if(user.tipo == "administrador"){
         const adminTokem = tm.signAdmin(user.id);        
         const tokem = tm.sign(user.id);
-        return {"user":{"email": user.email, "name": user.name}, "tokem": tokem, "adminTokem": adminTokem};         
+        return {"user":{"email": user.email, "name": user.name}, "tokem": tokem, "adminTokem": adminTokem, "tipo": "admin"};         
     }
     
 }

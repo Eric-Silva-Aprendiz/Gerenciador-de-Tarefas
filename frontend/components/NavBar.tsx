@@ -1,11 +1,12 @@
 "use client"
 import {signOut, useSession} from "next-auth/react";
-import { signOutServer } from "@/services/client";
+import { signOutServer, signOutServerAdmin } from "@/services/client";
 import Link from "next/link";
 
 async function Sair(){
     signOut()
     signOutServer()
+    signOutServerAdmin()
 }
 
 function AuthButton() {    
@@ -32,7 +33,7 @@ export default function NavBar(tokenTipo: any){
                 <div className="flex gap-2 items-center">
                     <Link href='/' className="text-2xl font-semibold">Gerenciador de Tarefas</Link>
                     <Link href='/sobre' className="bg-blue-500 rounded font-semibold p-2 hover:bg-blue-800">Sobre</Link>
-                    <Link href= '/users' className="bg-blue-500 rounded font-semibold p-2 hover:bg-blue-800">Usuários</Link>
+                    <Link href= "/users?page=1" className="bg-blue-500 rounded font-semibold p-2 hover:bg-blue-800">Usuários</Link>
                 </div>
                 <div className="flex gap-2 items-center">
                     <AuthButton />

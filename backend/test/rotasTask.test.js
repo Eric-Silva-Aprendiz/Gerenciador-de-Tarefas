@@ -13,7 +13,7 @@ let taskId;
 
 beforeAll(async () => {
         const response = await request(server)
-            .post('/api/users')
+            .post('/api/users/addUser')
             .send({
                 name: "Test user", 
                 email: "Test@gmail.com", 
@@ -142,8 +142,7 @@ describe("teste de rotas de tarefas", () => {
         const responseTask = await request(server)
             .get(`/api/users/tasks/${taskId}`)
             .set("Cookie", `access-token=${tokem}`)
-        
-        console.log(responseTask.body)
+            
 
             expect(response.status).toBe(200);
             expect(responseTask.status).toBe(200);                    
