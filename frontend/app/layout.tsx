@@ -5,6 +5,7 @@ import SessionProvider from "../components/SessionProvider";
 import { getCustomSession } from "@/services/server"
 import NavBar from "../components/NavBar";
 import { TokemExiste } from "@/services/server"
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,17 +35,20 @@ export default async function RootLayout({
 
   let session;
   let token = await TokemExiste();
+  console.log("tokem encontrado: ", token)
   if(token){
-    session = await getCustomSession();  
+    session = await getCustomSession();      
   }
   
   return (
       <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
         <body className="min-h-full flex flex-col">
-          <SessionProvider session={session}>
-            <NavBar tokenTipo = {token}/>
-            {children}
-          </SessionProvider>
+          <AuthProvider>
+            <SessionProvider key={session?.user?.name ?? session?.user?.email ?? "sem sessao"} session={session}>
+              <NavBar tokenTipo = {token}/>
+              {children}
+            </SessionProvider>
+          </AuthProvider>
           </body>
       </html>
     );

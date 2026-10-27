@@ -3,9 +3,11 @@ import { signIn } from "next-auth/react";
 import { login } from "@/services/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 
 export default function Login() {
+  const {atualizarUsuario} = useAuth();
   const router = useRouter()
   const [loadingMyApi, setLoadingMyApi] = useState(false);
   const [loadingGitHub, setLoadingGitHub] = useState(false);
@@ -20,8 +22,10 @@ export default function Login() {
       const inputSenha = formData.get("password");
       
         json = await login(inputEmail, inputSenha);
-        if((json.status == 200)){                                    
-            router.push("/");
+        if((json.status == 200)){ 
+            await atualizarUsuario()                                  
+            router.replace("/"); 
+            router.refresh();         
         } else{                      
             alert(`status: ${json.status} ${json.dados.mensagem}`);
             setLoadingMyApi(false);

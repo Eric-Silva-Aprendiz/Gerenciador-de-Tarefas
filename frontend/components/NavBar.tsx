@@ -2,6 +2,8 @@
 import {signOut, useSession} from "next-auth/react";
 import { signOutServer, signOutServerAdmin } from "@/services/client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 async function Sair(){
     signOut()
@@ -9,14 +11,17 @@ async function Sair(){
     signOutServerAdmin()
 }
 
-function AuthButton() {    
-    const {data: session } = useSession();        
+function AuthButton() {         
+    const {usuario, carregando} = useAuth();  
+
+    if(carregando){
+        return <span>carregando...</span>
+    }    
+    
         return (
             <div>
-                {
-                    session
-                        ? <>
-                            <span><Link href='/about'>{session?.user?.name} </Link></span>
+                {usuario ? <>
+                            <span><Link href='/about'>{usuario.name} </Link></span>
                             <button onClick={() => Sair()} className="bg-blue-500 rounded font-semibold p-2 hover: bg-blue-800">Sign Out</button> 
                         </> : <>
                             <Link href='/signin' className="bg-blue-500 rounded font-semibold p-2 hover:bg-blue-800 mb-1"> Sign In </Link>

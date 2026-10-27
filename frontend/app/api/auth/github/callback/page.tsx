@@ -20,7 +20,8 @@ export default function GitHubCallback() {
 
       await response.json();
 
-      router.push("/");
+      router.replace("/");
+      router.refresh();      
     }
 
     authenticateBackend();
